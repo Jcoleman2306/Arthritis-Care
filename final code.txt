@@ -1,0 +1,256 @@
+import 'dart:math';
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(ArthritisApp());
+}
+
+class ArthritisApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Arthritis Care',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: DefaultTabController(
+        length: 5, // Number of tabs
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text('Arthritis Care'),
+            bottom: TabBar(
+              tabs: [
+                Tab(text: 'Home'),
+                Tab(text: 'Arthritis Users'),
+                Tab(text: 'Community'),
+                Tab(text: 'Create Post'),
+                Tab(text: 'Personal Account'),
+              ],
+            ),
+          ),
+          body: TabBarView(
+            children: [
+              LogoScreen(), // First tab content
+              ArthritisScreen(), // Second tab content
+              CommunityScreen(), // Third tab content
+              CreatePostScreen(), // Fourth tab content
+              PersonalAccountScreen(email: '', name: '',), // Fifth tab content
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class LogoScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Home'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            LogoWidget(), // Display the logo widget
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                // Implement the desired action for the button
+              },
+              child: Text('Continue'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class LogoWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Image.asset(
+      'image/abstract-logo-generator-for-pharmaceutical-companies-1856g-2639.png',
+      width: 700, // Adjust the width as needed
+    );
+  }
+}
+
+
+class CommunityScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Community'),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Community Posts:',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
+          ),
+          ListTile(
+            title: Text('Post 1'),
+            subtitle: Text('User A: "I found relief using heat therapy."'),
+          ),
+          ListTile(
+            title: Text('Post 2'),
+            subtitle: Text('User B: "Regular exercise helped improve my symptoms."'),
+          ),
+          ListTile(
+            title: Text('Post 3'),
+            subtitle: Text('User C: "Diet changes reduced my joint inflammation."'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CreatePostScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Create Post'),
+      ),
+      body: Center(
+        child: Text('Create Post Screen'),
+      ),
+    );
+  }
+}
+
+class PersonalAccountScreen extends StatelessWidget {
+  final String email;
+  final String name;
+  final String accountNumber;
+
+  PersonalAccountScreen({required this.email, required this.name})
+      : accountNumber = 'AC-${Random().nextInt(10000)}';
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Personal Account'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              'Name:JcoleTheGOATatCODING $name',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 10),
+            Text(
+              'Email:jmcolema@bsc.edu $email',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 10),
+            Text(
+              'Account Number: $accountNumber',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ArthritisScreen extends StatelessWidget {
+  final List<ArthritisUser> users = [
+    ArthritisUser("John", 32, "Pain in knees"),
+    ArthritisUser("Alice", 28, "Swelling in joints"),
+    ArthritisUser("Bob", 40, "Difficulty in movements"),
+    ArthritisUser("Justin", 22, "Pain in the back, pain in the knees, Dr Bridges at UAB hospital helped me with the pain"),
+    ArthritisUser("Maria", 32, "Pain in both hands, hurts to rotate"),
+    ArthritisUser("Sarah", 20, "Morning stiffness and fatigue in the hands"),
+    ArthritisUser("David", 35, "Redness and warmth in the ankles"),
+    ArthritisUser("Michael", 15, "Difficulty walking and climbing stairs due to knee pain"),
+    ArthritisUser("Jessica", 23, "Joint stiffness and discomfort in the elbows"),
+    ArthritisUser("William", 18, "Joint pain aggravated by cold weather"),
+    ArthritisUser("Olivia", 16, "Joint swelling and inflammation in the shoulders")
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: users.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(users[index].name),
+          subtitle: Text('Age: ${users[index].age.toString()}'),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => UserDetailsScreen(user: users[index]),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class UserDetailsScreen extends StatelessWidget {
+  final ArthritisUser user;
+
+  UserDetailsScreen({required this.user});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(user.name),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Age: ${user.age.toString()}'),
+            SizedBox(height: 8.0),
+            Text('Symptoms: ${user.symptoms}'),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ArthritisUser {
+  final String name;
+  final int age;
+  final String symptoms;
+
+  ArthritisUser(this.name, this.age, this.symptoms);
+}
+
